@@ -14,10 +14,10 @@ class App extends \Qck\App
 
     static function createConfig( $name, $defaultAppFunctionFqcn, $defaultRouteName = null )
     {
-        return new \App\Config( $name, $defaultAppFunctionFqcn, $defaultRouteName );
+        return new App\Config( $name, $defaultAppFunctionFqcn, $defaultRouteName );
     }
 
-    public function __construct( \App\Config $config )
+    public function __construct( App\Config $config )
     {
         parent::__construct( $config );
     }
@@ -26,12 +26,12 @@ class App extends \Qck\App
 
 namespace Qck\Ext\App;
 
-class Config implements \Qck\Ext\Interfaces\AppConfig
+class Config extends \Qck\App\Config implements \Qck\Ext\Interfaces\AppConfig
 {
 
     public function __construct( $name, $defaultAppFunctionFqcn, $defaultRouteName = null )
     {
-        $this->config = \Qck\App::createConfig( $name, $defaultAppFunctionFqcn, $defaultRouteName );
+        parent::__construct( $name, $defaultAppFunctionFqcn, $defaultRouteName );
     }
 
     public function smtpSettings( $host ): \Qck\Ext\Interfaces\SmtpSettings
@@ -44,38 +44,6 @@ class Config implements \Qck\Ext\Interfaces\AppConfig
     {
         new \Qck\Ext\App( $this );
     }
-
-    public function addRoute( $fqcn, $routeName = null )
-    {
-        $this->config->addRoute( $fqcn, $routeName );
-        return $this;
-    }
-
-    public function setAppFunctionNamespace( $appFunctionNamespace )
-    {
-
-        $this->config->setAppFunctionNamespace( $appFunctionNamespace );
-        return $this;
-    }
-
-    public function setShowErrors( $showErrors = false )
-    {
-
-        $this->config->setShowErrors( $showErrors );
-        return $this;
-    }
-
-    public function setUserArgs( array $args = array () )
-    {
-
-        $this->config->setUserArgs( $args );
-        return $this;
-    }
-
-    /**
-     * 
-     */
-    protected $config;
 
     /**
      *
@@ -114,7 +82,7 @@ class SmtpSettings implements \Qck\Ext\Interfaces\SmtpSettings
         return $this->password;
     }
 
-    function rncryptionType(): string
+    function encryptionType(): string
     {
         return $this->encryptionType;
     }
@@ -139,7 +107,7 @@ class SmtpSettings implements \Qck\Ext\Interfaces\SmtpSettings
         return $this->verifyCertificates;
     }
 
-    function setCredentials( string $username, $password )
+    function setCredentials( $username, $password )
     {
         $this->username = $username;
         $this->password = $password;
