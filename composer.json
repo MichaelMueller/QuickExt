@@ -1,0 +1,22 @@
+{
+    "name": "michaelmueller/quickext",
+    "type": "library",
+    "description": "An application framework for PHP, extended edition",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Michael Mueller",
+            "email": "michaelmuelleronline@gmx.de"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "michaelmueller/quick": "2.1.0",
+        "phpmailer/phpmailer": "^6.2"             
+    },
+    "autoload": {
+        "psr-4": {
+            "Qck\\Ext\\": "src"
+        }
+    }
+}
