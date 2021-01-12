@@ -6,10 +6,10 @@ require_once __DIR__ . '/../../vendor/autoload.php';
  * 
  * @author muellerm
  */
-class HelloWorld implements \Qck\Interfaces\AppFunction
+class HelloWorld implements \Qck\AppFunction
 {
 
-    public function run( \Qck\Interfaces\App $app )
+    public function run( App $app )
     {
         $app->httpResponse()->createContent( "Hello World. Your IP: " . $app->httpRequest()->ipAddress()->value() )->response()->send();
     }

@@ -6,7 +6,7 @@ namespace Qck\Ext\Interfaces;
  * 
  * @author muellerm
  */
-interface AppConfig extends \Qck\Interfaces\AppConfig
+interface AppConfig extends \Qck\AppConfig
 {
 
     /**
