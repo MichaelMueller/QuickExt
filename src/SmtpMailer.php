@@ -2,22 +2,20 @@
 
 namespace Qck\Ext;
 
-abstract class SmtpMailer
+abstract class SmtpMailer implements Mailer
 {
-
-    abstract function send($recepients, $subject, $message, $isHtml = false, $attachments = array(), $embeddedImages = array());
 
     const ENCRYPTION_SSL = "ssl";
     const ENCRYPTION_TLS = "tls";
 
-    function __construct(string $host)
+    function __construct( string $host )
     {
         $this->host = $host;
     }
 
-    function appConfig()
+    function newMail( $recipientEmail, $recipientName = null )
     {
-        return $this->appConfig;
+        return new Mail( $this, $recipientEmail, $recipientName );
     }
 
     function host(): string
@@ -60,48 +58,42 @@ abstract class SmtpMailer
         return $this->verifyCertificates;
     }
 
-    function setCredentials($username, $password)
+    function setCredentials( $username, $password )
     {
         $this->username = $username;
         $this->password = $password;
         return $this;
     }
 
-    function setSmtpEncryptionType(string $smtpEncryptionType = SmtpEncryptionType ::ENCRYPTION_SSL)
+    function setSmtpEncryptionType( string $smtpEncryptionType = self ::ENCRYPTION_SSL )
     {
         $this->smtpEncryptionType = $smtpEncryptionType;
         return $this;
     }
 
-    function setPort(int $port = 465)
+    function setPort( int $port = 465 )
     {
         $this->port = $port;
         return $this;
     }
 
-    function setFromAddress(string $fromAddress)
+    function setFromAddress( string $fromAddress )
     {
         $this->fromAddress = $fromAddress;
         return $this;
     }
 
-    function setFromName(string $fromName)
+    function setFromName( string $fromName )
     {
         $this->fromName = $fromName;
         return $this;
     }
 
-    function setVerifyCertificates(bool $verifyCertificates)
+    function setVerifyCertificates( bool $verifyCertificates )
     {
         $this->verifyCertificates = $verifyCertificates;
         return $this;
     }
-
-    /**
-     *
-     * @var \Qck\Ext\Interfaces\AppConfig
-     */
-    protected $appConfig;
 
     /**
      *

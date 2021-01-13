@@ -10,56 +10,56 @@ namespace Qck\Ext;
 class PhpSmtpMailer extends SmtpMailer
 {
 
-    public function __construct(string $host)
+    public function __construct( string $host )
     {
-        parent::__construct($host);
+        parent::__construct( $host );
     }
 
-    public function send($recepients, $subject, $message, $isHtml = false, $attachments = array(), $embeddedImages = array())
+    public function send( Mail $mail )
     {
-        $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
-        $mail->isSMTP();
-        $mail->Host = $this->host;
-        $mail->SMTPAuth = $this->auth;
-        $mail->Username = $this->username;
-        $mail->Password = $this->password;
-        $mail->SMTPSecure = $this->encryptionType;
-        $mail->Port = $this->port;
-        if (!$this->verfiyCertificates)
+        $mailer             = new \PHPMailer\PHPMailer\PHPMailer( true );
+        $mailer->isSMTP();
+        $mailer->Host       = $this->host;
+        $mailer->SMTPAuth   = $this->auth;
+        $mailer->Username   = $this->username;
+        $mailer->Password   = $this->password;
+        $mailer->SMTPSecure = $this->encryptionType;
+        $mailer->Port       = $this->port;
+        if ( !$this->verfiyCertificates )
         {
-            $mail->SMTPOptions = array(
-                'ssl' => array(
-                    'verify_peer' => false,
-                    'verify_peer_name' => false,
+            $mailer->SMTPOptions = array (
+                'ssl' => array (
+                    'verify_peer'       => false,
+                    'verify_peer_name'  => false,
                     'allow_self_signed' => true
                 )
             );
         }
         $senderAddress = $this->fromAddress;
-        $senderName = $this->fromName;
-        $mail->setFrom($senderAddress, $senderName);
-        if (is_string($recepients))
-            $recepients = array($recepients);
-        foreach ($recepients as $recepient)
+        $senderName    = $this->fromName;
+        $mailer->setFrom( $senderAddress, $senderName );
+        if ( is_string( $recepients ) )
+            $recepients    = array ( $recepients );
+        foreach ( $recepients as $recepient )
         {
-            $rAddress = isset($recepient["address"]) ? $recepient["address"] : $recepient;
-            $rName = isset($recepient["name"]) ? $recepient["name"] : null;
-            $mail->addAddress($rAddress, $rName);
+            $rAddress = isset( $recepient[ "address" ] ) ? $recepient[ "address" ] : $recepient;
+            $rName    = isset( $recepient[ "name" ] ) ? $recepient[ "name" ] : null;
+            $mailer->addAddress( $rAddress, $rName );
         }
 
-        $mail->isHTML($isHtml);
-        $mail->Subject = $subject;
-        $mail->Body = $message;
+        $mailer->isHTML( $isHtml );
+        $mailer->Subject = $subject;
+        $mailer->Body    = $message;
 
-        foreach ($attachments as $attachment)
-            $mail->addAttachment($attachment);
+        foreach ( $attachments as $attachment )
+            $mailer->addAttachment( $attachment );
 
-        foreach ($embeddedImages as $cid => $embeddedImage)
-            $mail->addEmbeddedImage($embeddedImage, $cid);
+        foreach ( $embeddedImages as $cid => $embeddedImage )
+            $mailer->addEmbeddedImage( $embeddedImage, $cid );
 
-        if (!$mail->send())
+        if ( !$mailer->send() )
         {
-            throw new \Exception('Message could not be sent. ' . $mail->ErrorInfo);
+            throw new \Exception( 'Message could not be sent. ' . $mailer->ErrorInfo );
         }
     }
 
