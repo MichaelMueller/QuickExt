@@ -45,6 +45,8 @@ abstract class SmtpMailer implements Mailer
 
     function fromAddress(): string
     {
+        if( !$this->fromAddress && $this->username)
+            return $this->username;
         return $this->fromAddress;
     }
 

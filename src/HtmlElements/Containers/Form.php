@@ -5,6 +5,9 @@ namespace Qck\Ext\HtmlElements\Containers;
 class Form extends \Qck\Ext\HtmlElements\Container
 {
 
+    const POST = "post";
+    const GET  = "get";
+
     static function new( $action, HtmlElement $parent = null ): Form
     {
         return new Form( $action, $parent );
@@ -21,6 +24,12 @@ class Form extends \Qck\Ext\HtmlElements\Container
         return "form";
     }
 
+    function setMethod( $method )
+    {
+        $this->method = $method;
+    }
+
     protected $action;
+    protected $method = self::POST;
 
 }

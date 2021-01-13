@@ -38,7 +38,10 @@ abstract class HtmlElement implements \Qck\Snippet
         foreach ( $props as $prop )
         {
             $prop->setAccessible( true );
-            $attributes[ $prop->getName() ] = $prop->getValue( $this );
+            $value                          = $prop->getValue( $this );
+            if ( !is_scalar( $value ) && is_null( $value ) == false )
+                continue;
+            $attributes[ $prop->getName() ] = $value;
         }
 
         $text = "<" . $this->elementName();
@@ -52,7 +55,7 @@ abstract class HtmlElement implements \Qck\Snippet
             $text .= "</" . $this->elementName() . ">" . PHP_EOL;
         }
         else
-            $text .= "/>" . PHP_EOL;
+            $text .= " />" . PHP_EOL;
         return $text;
     }
 

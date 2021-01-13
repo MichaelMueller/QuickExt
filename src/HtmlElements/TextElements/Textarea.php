@@ -13,8 +13,7 @@ class Textarea extends \Qck\Ext\HtmlElements\TextElement
     function __construct( $name, HtmlElement $parent = null )
     {
         parent::__construct( $parent );
-        $this->name              = $name;
-        $this->enforceClosingTag = true;
+        $this->name = $name;
     }
 
     protected function elementName(): string
@@ -22,6 +21,6 @@ class Textarea extends \Qck\Ext\HtmlElements\TextElement
         return "textarea";
     }
 
-    protected $action;
+    protected $name;
 
 }

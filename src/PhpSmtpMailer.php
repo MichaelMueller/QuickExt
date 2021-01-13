@@ -10,6 +10,11 @@ namespace Qck\Ext;
 class PhpSmtpMailer extends SmtpMailer
 {
 
+    static function new( string $host ): PhpSmtpMailer
+    {
+        return new PhpSmtpMailer( $host );
+    }
+
     public function __construct( string $host )
     {
         parent::__construct( $host );
@@ -20,12 +25,12 @@ class PhpSmtpMailer extends SmtpMailer
         $mailer             = new \PHPMailer\PHPMailer\PHPMailer( true );
         $mailer->isSMTP();
         $mailer->Host       = $this->host;
-        $mailer->SMTPAuth   = $this->auth;
+        $mailer->SMTPAuth   = $this->username || $this->password;
         $mailer->Username   = $this->username;
         $mailer->Password   = $this->password;
-        $mailer->SMTPSecure = $this->encryptionType;
+        $mailer->SMTPSecure = $this->smtpEncryptionType;
         $mailer->Port       = $this->port;
-        if ( !$this->verfiyCertificates )
+        if ( !$this->verifyCertificates )
         {
             $mailer->SMTPOptions = array (
                 'ssl' => array (
@@ -35,7 +40,7 @@ class PhpSmtpMailer extends SmtpMailer
                 )
             );
         }
-        $senderAddress = $this->fromAddress;
+        $senderAddress = $this->fromAddress();
         $senderName    = $this->fromName;
         $mailer->setFrom( $senderAddress, $senderName );
 
@@ -58,7 +63,7 @@ class PhpSmtpMailer extends SmtpMailer
 
         if ( !$mailer->send() )
         {
-            throw new \Exception( 'Message could not be sent. ' . $mailer->ErrorInfo );
+            \Qck\Exception::new()->error( $mailer->ErrorInfo )->throw();
         }
     }
 

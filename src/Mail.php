@@ -121,12 +121,12 @@ class Mail
      *
      * @var string[]
      */
-    protected $attachments;
+    protected $attachments=[];
 
     /**
      *
      * @var string[]
      */
-    protected $embeddedImages;
+    protected $embeddedImages=[];
 
 }

@@ -7,6 +7,12 @@ class Input extends \Qck\Ext\HtmlElement
 
     const TEXT     = "text";
     const PASSWORD = "password";
+    const SUBMIT   = "submit";
+
+    static function submit( $name, $value, HtmlElement $parent = null ): Input
+    {
+        return (new Input( $name, self::SUBMIT, $parent ) )->setValue( $value );
+    }
 
     static function password( $name, HtmlElement $parent = null ): Input
     {
@@ -36,6 +42,12 @@ class Input extends \Qck\Ext\HtmlElement
         return $this;
     }
 
+    function setValue( $value ): Input
+    {
+        $this->value = $value;
+        return $this;
+    }
+
     protected function elementName(): string
     {
         return "input";
@@ -43,6 +55,7 @@ class Input extends \Qck\Ext\HtmlElement
 
     protected $name;
     protected $type;
+    protected $value;
     protected $placeholder;
 
 }
