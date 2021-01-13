@@ -1,5 +1,6 @@
 <?php
 
+//require_once __DIR__ . '/../../srcBundle/QuickExt.php';
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use Qck\Ext\HtmlElements\Input;
