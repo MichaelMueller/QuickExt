@@ -46,15 +46,45 @@ class Mail
         return $this;
     }
 
-    function addEmbeddedImage( string $embeddedImage ): Mail
+    function addEmbeddedImage( string $cid, string $embeddedImage ): Mail
     {
-        $this->embeddedImages[] = $embeddedImage;
+        $this->embeddedImages[ $cid ] = $embeddedImage;
         return $this;
     }
 
     function send(): void
     {
         $this->mailer->send( $this );
+    }
+
+    function recipients(): array
+    {
+        return $this->recipients;
+    }
+
+    function text(): string
+    {
+        return $this->text;
+    }
+
+    function subject(): string
+    {
+        return $this->subject;
+    }
+
+    function isHtml(): bool
+    {
+        return $this->isHtml;
+    }
+
+    function attachments(): array
+    {
+        return $this->attachments;
+    }
+
+    function embeddedImages(): array
+    {
+        return $this->embeddedImages;
     }
 
     /**

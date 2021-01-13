@@ -38,23 +38,22 @@ class PhpSmtpMailer extends SmtpMailer
         $senderAddress = $this->fromAddress;
         $senderName    = $this->fromName;
         $mailer->setFrom( $senderAddress, $senderName );
-        if ( is_string( $recepients ) )
-            $recepients    = array ( $recepients );
-        foreach ( $recepients as $recepient )
+
+        foreach ( $mail->recipients() as $recepient )
         {
-            $rAddress = isset( $recepient[ "address" ] ) ? $recepient[ "address" ] : $recepient;
-            $rName    = isset( $recepient[ "name" ] ) ? $recepient[ "name" ] : null;
+            $rAddress = $recepient[ 0 ];
+            $rName    = $recepient[ 1 ];
             $mailer->addAddress( $rAddress, $rName );
         }
 
-        $mailer->isHTML( $isHtml );
-        $mailer->Subject = $subject;
-        $mailer->Body    = $message;
+        $mailer->isHTML( $mail->isHtml() );
+        $mailer->Subject = $mail->subject();
+        $mailer->Body    = $mail->text();
 
-        foreach ( $attachments as $attachment )
+        foreach ( $mail->attachments() as $attachment )
             $mailer->addAttachment( $attachment );
 
-        foreach ( $embeddedImages as $cid => $embeddedImage )
+        foreach ( $mail->embeddedImages() as $cid => $embeddedImage )
             $mailer->addEmbeddedImage( $embeddedImage, $cid );
 
         if ( !$mailer->send() )

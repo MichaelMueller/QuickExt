@@ -2,19 +2,34 @@
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
+use Qck\Ext\HtmlElements\Input;
+use Qck\Ext\HtmlElements\Br;
+
 /**
  * 
  * @author muellerm
  */
-class HelloWorld implements \Qck\AppFunction
+class MailForm implements \Qck\AppFunction
 {
 
-    public function run( App $app )
+    public function run( \Qck\App $app )
     {
-        $app->httpResponse()->createContent( "Hello World. Your IP: " . $app->httpRequest()->ipAddress()->value() )->response()->send();
+        $form = Qck\Ext\HtmlElements\Containers\Form::new( "?q=SendMail" );
+        $form->add( Input::text( "host" )->setPlaceholder( "host" ) );
+        $form->add( Br::new() );
+        $form->add( Input::text( "username" )->setPlaceholder( "username" ) );
+        $form->add( Br::new() );
+        $form->add( Input::password( "password" )->setPlaceholder( "password" ) );
+        $form->add( Br::new() );
+        $form->add( Input::text( "recipient" )->setPlaceholder( "recipient" ) );
+        $form->add( Br::new() );
+        $form->add( Input::text( "subject" )->setPlaceholder( "subject" ) );
+        $form->add( Br::new() );
+        $form->add( \Qck\Ext\HtmlElements\TextElements\Textarea::new( "text" ) );
+        $page = Qck\Ext\HttpResponse::new()->createHtmlPage()->setBody( $form )->response()->send();
     }
 
 }
 
-\Qck\Ext\App::createConfig( "Demo App", HelloWorld::class )->setShowErrors( true )->runApp();
+\Qck\App::new( "Mail Sender Demo App", MailForm::class )->setShowErrors( true )->run();
 
