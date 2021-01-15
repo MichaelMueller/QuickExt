@@ -7,22 +7,22 @@ class Table
 
     function real( string $name ): Columns\Real
     {
-        $item            = new Columns\Real( $this, $name );
-        $this->columns[] = $item;
+        $item = new Columns\Real( $this, $name );
+        $this->addColumn( $item );
         return $item;
     }
 
     function integer( string $name ): Columns\Integer
     {
-        $item            = new Columns\Integer( $this, $name );
-        $this->columns[] = $item;
+        $item = new Columns\Integer( $this, $name );
+        $this->addColumn( $item );
         return $item;
     }
 
     function string( string $name, int $maxLength = Columns\Blob::NORMAL ): Columns\Str
     {
-        $item            = new Columns\Str( $this, $name, $maxLength );
-        $this->columns[] = $item;
+        $item = new Columns\Str( $this, $name, $maxLength );
+        $this->addColumn( $item );
         return $item;
     }
 
@@ -43,6 +43,11 @@ class Table
         }
         $exception->throw();
         return $filteredData;
+    }
+
+    protected function addColumn( Column $item )
+    {
+        $this->columns[ $item->name() ] = $item;
     }
 
     /**
