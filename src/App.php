@@ -5,7 +5,13 @@ namespace Qck\Ext;
 class App extends \Qck\App
 {
 
-    static function new( $name, $defaultAppFunctionFqcn ): App
+    /**
+     * 
+     * @param string $name
+     * @param string $defaultAppFunctionFqcn
+     * @return \Qck\Ext\App
+     */
+    static function new( $name, $defaultAppFunctionFqcn )
     {
         return new App( $name, $defaultAppFunctionFqcn );
     }
