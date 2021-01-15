@@ -81,13 +81,24 @@ class SendMail implements \Qck\AppFunction
 
     public function run( \Qck\App $app )
     {
-        $request   = $app->request();
-        $phpMailer = Qck\Ext\PhpSmtpMailer::new( $request->get( "host" ) );
-        $phpMailer->setCredentials( $request->get( "username" ), $request->get( "password" ) );
-        $message   = $app->log()->info( "Mail was sent" );
         try
         {
-            $phpMailer->newMail( $request->get( "recipient" ) )->setSubject( $request->get( "subject" ) )->setText( $request->get( "text" ) )->send();
+            $request = $app->request();
+            $table   = new Qck\Ext\Data\Table();
+            $table->string( "host" )->setMinLength( 1 );
+            $table->string( "username" )->setNotNull();
+            $table->string( "password" )->setMinLength( 1 );
+            $table->string( "recipient" )->setMinLength( 1 );
+            $table->string( "subject" )->setMinLength( 1 );
+            $table->string( "text" )->setMinLength( 1 );
+            $data    = $table->filter( $request->args() );
+            list($host, $username, $password, $recipient, $subject, $text) = array_values( $data );
+
+            $phpMailer = Qck\Ext\PhpSmtpMailer::new( $host );
+            $phpMailer->setCredentials( $username, $password );
+            $message   = $app->log()->info( "Mail was sent" );
+            $phpMailer->newMail( $recipient )->setSubject( $subject )->setText( $text )->send();
+            $message->send();
         }
         catch ( \PHPMailer\PHPMailer\Exception $ex )
         {
@@ -97,7 +108,10 @@ class SendMail implements \Qck\AppFunction
         {
             $message = $app->log()->error( $ex );
         }
-        $message->send();
+        finally
+        {
+            //$message = $app->log()->error( "Unknown error" );
+        }
         MailForm::new( $message )->run( $app );
     }
 
