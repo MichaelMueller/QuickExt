@@ -2,7 +2,7 @@
 
 namespace Qck\Ext\Data\Columns;
 
-class Int extends Number
+class Real extends Number
 {
 
     public function __construct( \Qck\Ext\Data\Table $table, string $name )
@@ -10,12 +10,12 @@ class Int extends Number
         parent::__construct( $table, $name );
     }
 
-    function addRange( int $min = null, int $max = null ): Int
+    function addRange( float $min = null, float $max = null ): Real
     {
         if ( !$min )
-            $min            = PHP_INT_MIN;
+            $min            = PHP_FLOAT_MIN;
         if ( !$max )
-            $min            = PHP_INT_MAX;
+            $min            = PHP_FLOAT_MAX;
         $this->ranges[] = [ $min, $max ];
         return $this;
     }

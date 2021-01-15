@@ -2,7 +2,7 @@
 
 namespace Qck\Ext\Data\Columns;
 
-class Float extends Number
+class Integer extends Number
 {
 
     public function __construct( \Qck\Ext\Data\Table $table, string $name )
@@ -10,12 +10,12 @@ class Float extends Number
         parent::__construct( $table, $name );
     }
 
-    function addRange( float $min = null, float $max = null ): Float
+    function addRange( int $min = null, int $max = null ): Integer
     {
         if ( !$min )
-            $min            = PHP_FLOAT_MIN;
+            $min            = PHP_INT_MIN;
         if ( !$max )
-            $min            = PHP_FLOAT_MAX;
+            $min            = PHP_INT_MAX;
         $this->ranges[] = [ $min, $max ];
         return $this;
     }
