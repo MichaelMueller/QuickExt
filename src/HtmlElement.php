@@ -5,12 +5,16 @@ namespace Qck\Ext;
 abstract class HtmlElement implements \Qck\Snippet
 {
 
-    function __construct( HtmlElement $parent = null )
+    function __construct( string $elementName, HtmlElement $parent = null )
     {
-        $this->parent = $parent;
+        $this->elementName = $elementName;
+        $this->parent      = $parent;
     }
 
-    abstract protected function elementName(): string;
+    function elementName(): string
+    {
+        return $this->elementName;
+    }
 
     /**
      * 
@@ -27,37 +31,57 @@ abstract class HtmlElement implements \Qck\Snippet
         return $this;
     }
 
-    function toString(): string
+    /**
+     * 
+     * @return \Qck\Ext\HtmlElement[]
+     */
+    function children()
     {
-        $ref   = new \ReflectionClass( $this );
-        $props = array_filter( $ref->getProperties(), function( $property )
-        {
-            return $property->class != HtmlElement::class;
-        } );
-        $attributes = [];
-        foreach ( $props as $prop )
-        {
-            $prop->setAccessible( true );
-            $value                          = $prop->getValue( $this );
-            if ( !is_scalar( $value ) && is_null( $value ) == false )
-                continue;
-            $attributes[ $prop->getName() ] = $value;
-        }
+        return $this->children;
+    }
 
-        $text = "<" . $this->elementName();
+    function addClass( string $class ): HtmlElement
+    {
+        $this->classes[] = $class;
+        return $this;
+    }
+
+    /**
+     * 
+     * @return string
+     */
+    function text()
+    {
+        return $this->children;
+    }
+
+    function toString( $indent = null, $level = 0 )
+    {
+
+        $attributes            = $this->attributes;
+        if ( $this->classes )
+            $attributes[ "class" ] = implode( " ", $this->classes );
+
+        $text = str_repeat( $indent, $level ) . "<" . $this->elementName();
         foreach ( $attributes as $key => $attribute )
-            $text .= " " . $key . ( is_null( $attribute ) ? null : "=\"" . $attribute . "\"" );
+            $text .= " " . $key . "=\"" . $attribute . "\"";
         if ( $this->enforceClosingTag || $this->text !== null || count( $this->children ) > 0 )
         {
-            $text .= ">" . $this->text;
+            $text .= ">" . $this->text . PHP_EOL;
             foreach ( $this->children as $child )
-                $text .= PHP_EOL . $child->toString();
-            $text .= "</" . $this->elementName() . ">" . PHP_EOL;
+                $text .= $child->toString( $indent, $level + 1 ) . PHP_EOL;
+            $text .= str_repeat( $indent, $level ) . "</" . $this->elementName() . ">";
         }
         else
             $text .= " />" . PHP_EOL;
         return $text;
     }
+
+    /**
+     *
+     * @var string
+     */
+    protected $elementName;
 
     /**
      *
@@ -69,7 +93,7 @@ abstract class HtmlElement implements \Qck\Snippet
      *
      * @var bool
      */
-    protected $enforceClosingTag;
+    protected $enforceClosingTag = true;
 
     /**
      *
@@ -82,5 +106,17 @@ abstract class HtmlElement implements \Qck\Snippet
      * @var HtmlElement[]
      */
     protected $children = [];
+
+    /**
+     *
+     * @var string[]
+     */
+    protected $attributes = [];
+
+    /**
+     *
+     * @var string[]
+     */
+    protected $classes = [];
 
 }

@@ -16,67 +16,29 @@ class HtmlPage extends \Qck\HttpContent
         return $this;
     }
 
-    function setTitle( string $title ): HtmlPage
+    function html(): HtmlElements\Html
     {
-        $this->title = $title;
-        return $this;
+        if ( is_null( $this->html ) )
+            $this->html = new HtmlElements\Html ( );
+        return $this->html;
     }
 
-    function setHead( string $head ): HtmlPage
+    function toString( $indent = null, $level = 0 )
     {
-        $this->head = $head;
-        return $this;
+        $html = str_repeat( $indent, $level ) . "<!doctype html>" . PHP_EOL;
+        $html .= $this->html()->toString( $indent, $level ) . PHP_EOL;
+        return $html;
     }
 
-    function setLanguage( string $language ): HtmlPage
+    function setIndent( string $indent )
     {
-        $this->language = $language;
-        return $this;
-    }
-
-    protected function print( $var )
-    {
-        print( $var instanceof \Qck\Snippet ? $var->toString() : strval( $var ) );
-    }
-
-    function toString(): string
-    {
-        ob_start();
-        ?>
-        <!doctype html>
-
-        <html lang="<?= $this->language ?>">
-            <head>
-                <meta charset="<?= $this->charSet ?>">
-
-                <title><?= $this->title ?></title>
-                <?= $this->print( $this->head ) ?>
-            </head>
-
-            <body>
-                <?= $this->print( $this->body ) ?>
-            </body>
-        </html>
-        <?php
-        return ob_get_clean();
+        $this->indent = $indent;
     }
 
     /**
      *
-     * @var string
+     * @var HtmlElements\Html
      */
-    protected $title;
-
-    /**
-     *
-     * @var string
-     */
-    protected $language = "en";
-
-    /**
-     *
-     * @var string|\Qck\Snippet
-     */
-    protected $head;
+    protected $html;
 
 }

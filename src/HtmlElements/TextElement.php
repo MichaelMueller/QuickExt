@@ -2,19 +2,15 @@
 
 namespace Qck\Ext\HtmlElements;
 
-abstract class TextElement extends \Qck\Ext\HtmlElement
+class TextElement extends \Qck\Ext\HtmlElement
 {
 
-    public function __construct( \Qck\Ext\HtmlElement $parent = null )
+    public function __construct( string $text, string $elementName, \Qck\Ext\HtmlElement $parent )
     {
-        parent::__construct( $parent );
-        $this->enforceClosingTag = true;
+        parent::__construct( $elementName, $parent );
+        $this->text = $text;
     }
 
-    function setText( $text ): \Qck\Ext\HtmlElement
-    {
-        $this->text = $text;
-        return $this;
-    }
+    protected $elementName;
 
 }
