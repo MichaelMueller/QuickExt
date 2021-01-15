@@ -11,18 +11,25 @@ class ContainerElement extends \Qck\Ext\HtmlElement
         $this->request = $request;
     }
 
-    function h1( $text ): ContainerElement
+    function h1( $text ): TextElement
     {
         $element          = new TextElement( $text, "h1", $this );
         $this->children[] = $element;
-        return $this;
+        return $element;
     }
 
-    function p( $text ): ContainerElement
+    function pre( $text ): TextElement
+    {
+        $element          = new TextElement( $text, "pre", $this );
+        $this->children[] = $element;
+        return $element;
+    }
+
+    function p( $text ): TextElement
     {
         $element          = new TextElement( $text, "p", $this );
         $this->children[] = $element;
-        return $this;
+        return $element;
     }
 
     function div(): ContainerElement
@@ -53,7 +60,7 @@ class ContainerElement extends \Qck\Ext\HtmlElement
         return $element;
     }
 
-    function submit( $name, $value ): Input
+    function submit( $value, $name = "submit" ): Input
     {
         $element          = new Input( $name, "submit", $this->request, $this );
         $element->setValue( $value );

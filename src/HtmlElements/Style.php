@@ -20,14 +20,14 @@ class Style extends \Qck\Ext\HtmlElement
 
     public function toString( $indent = null, $level = 0 ): string
     {
-        $this->text = $this->cssRules ? $this->cssRules->toString( $indent, $level ) : null;
+        $this->text = $this->cssRules ? PHP_EOL . $this->cssRules->toString( $indent, $level + 1 ) . PHP_EOL . str_repeat( $indent, $level ) : null;
         return parent::toString( $indent, $level );
     }
 
-    function cssRules(): CssRules
+    function cssRules(): \Qck\Ext\Css\Rules
     {
         if ( is_null( $this->cssRules ) )
-            $this->cssRules = new Css\Rules();
+            $this->cssRules = new \Qck\Ext\Css\Rules ( );
         return $this->cssRules;
     }
 

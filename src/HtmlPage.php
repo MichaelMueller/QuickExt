@@ -19,7 +19,7 @@ class HtmlPage extends \Qck\HttpContent
     function html(): HtmlElements\Html
     {
         if ( is_null( $this->html ) )
-            $this->html = new HtmlElements\Html ( );
+            $this->html = new HtmlElements\Html ( $this );
         return $this->html;
     }
 

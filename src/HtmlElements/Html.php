@@ -5,9 +5,15 @@ namespace Qck\Ext\HtmlElements;
 class Html extends \Qck\Ext\HtmlElement
 {
 
-    function __construct()
+    function __construct( \Qck\Ext\HtmlPage $page )
     {
         parent::__construct( "html", null );
+        $this->page = $page;
+    }
+
+    function page(): \Qck\Ext\HtmlPage
+    {
+        return $this->page;
     }
 
     function head(): Head
@@ -23,5 +29,11 @@ class Html extends \Qck\Ext\HtmlElement
             $this->children[ "body" ] = new Body( $request, $this );
         return $this->children[ "body" ];
     }
+
+    /**
+     *
+     * @var \Qck\Ext\HtmlPage
+     */
+    protected $page;
 
 }

@@ -67,13 +67,13 @@ abstract class HtmlElement implements \Qck\Snippet
             $text .= " " . $key . "=\"" . $attribute . "\"";
         if ( $this->enforceClosingTag || $this->text !== null || count( $this->children ) > 0 )
         {
-            $text .= ">" . $this->text . PHP_EOL;
+            $text .= ">" . $this->text . (count( $this->children ) > 0 ? PHP_EOL : null);
             foreach ( $this->children as $child )
                 $text .= $child->toString( $indent, $level + 1 ) . PHP_EOL;
-            $text .= str_repeat( $indent, $level ) . "</" . $this->elementName() . ">";
+            $text .= (count( $this->children ) > 0 ? str_repeat( $indent, $level ) : null) . "</" . $this->elementName() . ">";
         }
         else
-            $text .= " />" . PHP_EOL;
+            $text .= " />";
         return $text;
     }
 

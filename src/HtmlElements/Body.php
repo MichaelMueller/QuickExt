@@ -14,6 +14,6 @@ class Body extends ContainerElement
      */
     function parent()
     {
-        parent::parent();
+        return parent::parent();
     }
 }

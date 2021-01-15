@@ -34,11 +34,11 @@ class Rules implements \Qck\Snippet
         return $this->rules[ $selector ] ?? null;
     }
 
-    public function toString( $indent = null, $level=0 )
+    public function toString( $indent = null, $level = 0 )
     {
-        $strings = array_map( function ( $item ) use( $indent )
+        $strings = array_map( function ( $item ) use( $indent, $level )
         {
-            return $item->toString( $indent );
+            return $item->toString( $indent, $level );
         }, $this->rules );
         return implode( PHP_EOL, $strings );
     }

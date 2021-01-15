@@ -61,11 +61,11 @@ class Rule implements \Qck\Snippet
         return $varsCleaned;
     }
 
-    function toString( $indent = null, $level=0 )
+    function toString( $indent = null, $level = 0 )
     {
         $varsCleaned = $this->objectVarsCleaned();
-        $code        = $indent . $this->selector . PHP_EOL;
-        $code        .= $indent . "{" . PHP_EOL;
+        $code        = str_repeat( $indent, $level ) . $this->selector . PHP_EOL;
+        $code        .= str_repeat( $indent, $level ) . "{" . PHP_EOL;
         foreach ( $varsCleaned as $key => $value )
         {
             $varName = null;
@@ -78,9 +78,9 @@ class Rule implements \Qck\Snippet
                     $varName .= $char;
             }
 
-            $code .= str_repeat( $indent, 2 ) . $varName . ": " . $value . ";" . PHP_EOL;
+            $code .= str_repeat( $indent, $level + 1 ) . $varName . ": " . $value . ";" . PHP_EOL;
         }
-        $code .= $indent . "}" . PHP_EOL;
+        $code .= str_repeat( $indent, $level ) . "}";
 
         return $code;
     }

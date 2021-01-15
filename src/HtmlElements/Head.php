@@ -15,7 +15,7 @@ class Head extends \Qck\Ext\HtmlElement
      */
     function parent()
     {
-        parent::parent();
+        return parent::parent();
     }
 
     function style(): Style
@@ -29,7 +29,7 @@ class Head extends \Qck\Ext\HtmlElement
     {
         if ( !isset( $this->children[ "title" ] ) )
             $this->children[ "title" ] = new TextElement( $text, "title", $this );
-        return $this->children[ "title" ];
+        return $this;
     }
 
 }
